@@ -71,7 +71,7 @@ public class WorkoutExercise {
 
     @Override
     public String toString() {
-        return "Workout Exercise {" +
+        return "WorkoutExercise {" +
             "id=" + id +
             ", exercise='" + exercise.getName() + "'" +
             ", date='" + workout.getWorkoutDate() + "'" +
