@@ -25,28 +25,6 @@ jobs:
       - name: Build and Run Unit Tests with Maven
         run: mvn -B clean package -DskipTests=true
 
-  analyze:
-    name: Code Quality Analysis Using Snyk
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Initialize Snyk
-        uses: snyk/actions/maven@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --sarif-file-output=snyk.sarif
-
-      - name: Upload Result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: snyk.sarif
-
   test:
     name: Unit Test
 
@@ -63,7 +41,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Build and Run Unit Tests with Maven
-        run: mvn -B clean package -Pcoverage
+        run: mvn -B clean test -Dtest=!FitnessTrackerApplication*
 
       - name: Generate JaCoCo Badge
         id: jacoco
@@ -71,6 +49,8 @@ jobs:
         with:
           generate-branches-badge: true
           generate-summary: true
+          fail-if-coverage-less-than: 80
+          fail-on-coverage-decrease: true
 
       - name: Log Coverage Percentage
         run: |
