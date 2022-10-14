@@ -22,7 +22,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Build and Run Unit Tests with Maven
+      - name: Build with Maven
         run: mvn -B clean package -DskipTests=true
 
   test:
@@ -70,8 +70,8 @@ jobs:
           name: jacoco-report
           path: target/site/jacoco
 
-      - name: Commit and push the coverage badges and summary file
-        if: ${{ github.event_name != 'pull_request' }}
+      - name: Commit and Push to badges
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           cd badges
           if [[ `git status --porcelain *.svg *.json` ]]; then
