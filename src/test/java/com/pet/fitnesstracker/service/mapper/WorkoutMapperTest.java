@@ -39,7 +39,7 @@ class WorkoutMapperTest {
 
         actualResponseDTO = mapper.toDto(sampleWorkout);
 
-        assertNull(actualResponseDTO.getWorkoutExercises());
+        assertNull(actualResponseDTO.getExercises());
     }
 
     @Test
@@ -150,7 +150,7 @@ class WorkoutMapperTest {
         responseDTO.setWorkoutDate("2022-10-14");
         responseDTO.setTraineeName("Test Trainee");
         responseDTO.setRemarks("Test Remarks");
-        responseDTO.setWorkoutExercises(Collections.singletonList(workoutExerciseDTO));
+        responseDTO.setExercises(Collections.singletonList(workoutExerciseDTO));
 
         return responseDTO;
     }

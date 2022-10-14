@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
+import java.time.Instant;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
@@ -16,13 +17,18 @@ class ErrorDTOTest {
 
     @Test
     void checkSetters() {
-        ErrorDTO errorDTO = new ErrorDTO(HttpStatus.PROCESSING, "test message");
+        ErrorDTO errorDTO = new ErrorDTO(HttpStatus.PROCESSING, "test message",
+            Instant.now().toString());
+
+        String newDateTimeString = Instant.now().toString();
 
         errorDTO.setStatus(HttpStatus.OK);
         errorDTO.setMessage("test ok message");
+        errorDTO.setDateTime(newDateTimeString);
 
         assertEquals(HttpStatus.OK, errorDTO.getStatus());
         assertEquals("test ok message", errorDTO.getMessage());
+        assertEquals(newDateTimeString, errorDTO.getDateTime());
     }
 
     @Test

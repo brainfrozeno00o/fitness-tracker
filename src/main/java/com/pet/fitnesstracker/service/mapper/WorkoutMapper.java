@@ -19,7 +19,7 @@ import org.springframework.util.CollectionUtils;
 public interface WorkoutMapper {
 
     @Mapping(target = "traineeName", source = "trainee.name")
-    @Mapping(target = "workoutExercises", source = "workoutExercises", qualifiedByName = "getWorkoutExercises")
+    @Mapping(target = "exercises", source = "workoutExercises", qualifiedByName = "getWorkoutExercises")
     WorkoutResponseDTO toDto(Workout workout);
 
     Workout toEntity(AddWorkoutRequestDTO addWorkoutRequestDTO);

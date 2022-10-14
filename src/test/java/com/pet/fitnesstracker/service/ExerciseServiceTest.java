@@ -86,7 +86,7 @@ public class ExerciseServiceTest {
         assertEquals(1L, actualResponse.getId());
         assertEquals("Test Exercise", actualResponse.getName());
 
-        assertNull(actualResponse.getWorkoutExercises());
+        assertNull(actualResponse.getWorkouts());
     }
 
     @Test

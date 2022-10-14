@@ -20,7 +20,6 @@ public class ExerciseResponseDTO implements Serializable {
 
     private String name;
 
-    @JsonProperty("workouts")
-    private List<WorkoutDTO> workoutExercises;
+    private List<WorkoutDTO> workouts;
 
 }

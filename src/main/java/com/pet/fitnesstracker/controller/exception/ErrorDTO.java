@@ -18,4 +18,6 @@ public class ErrorDTO implements Serializable {
 
     private String message;
 
+    private String dateTime;
+
 }

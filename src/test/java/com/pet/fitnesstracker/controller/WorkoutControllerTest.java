@@ -50,7 +50,7 @@ class WorkoutControllerTest {
         responseDTO.setTraineeName("Test Trainee");
         responseDTO.setRemarks("Test Remarks");
         responseDTO.setWorkoutDate("2022-10-13");
-        responseDTO.setWorkoutExercises(new ArrayList<>());
+        responseDTO.setExercises(new ArrayList<>());
 
         when(service.findWorkoutById(anyString())).thenReturn(responseDTO);
 

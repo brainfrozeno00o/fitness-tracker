@@ -37,7 +37,7 @@ class ExerciseMapperTest {
 
         actualResponseDTO = mapper.toDto(sampleExercise);
 
-        assertNull(actualResponseDTO.getWorkoutExercises());
+        assertNull(actualResponseDTO.getWorkouts());
     }
 
     @Test
@@ -107,7 +107,7 @@ class ExerciseMapperTest {
 
         responseDTO.setId(1L);
         responseDTO.setName("Test Exercise");
-        responseDTO.setWorkoutExercises(Collections.singletonList(workoutDTO));
+        responseDTO.setWorkouts(Collections.singletonList(workoutDTO));
 
         return responseDTO;
     }

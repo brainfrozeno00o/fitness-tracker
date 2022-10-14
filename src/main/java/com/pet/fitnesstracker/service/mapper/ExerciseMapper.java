@@ -4,7 +4,6 @@ import com.pet.fitnesstracker.domain.Exercise;
 import com.pet.fitnesstracker.domain.Workout;
 import com.pet.fitnesstracker.domain.WorkoutExercise;
 import com.pet.fitnesstracker.dto.WorkoutDTO;
-import com.pet.fitnesstracker.dto.WorkoutExerciseDTO;
 import com.pet.fitnesstracker.dto.request.AddExerciseRequestDTO;
 import com.pet.fitnesstracker.dto.response.ExerciseResponseDTO;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import org.springframework.util.CollectionUtils;
 @Mapper(componentModel = "spring")
 public interface ExerciseMapper {
 
-    @Mapping(target = "workoutExercises", source = "workoutExercises", qualifiedByName = "getWorkouts")
+    @Mapping(target = "workouts", source = "workoutExercises", qualifiedByName = "getWorkouts")
     ExerciseResponseDTO toDto(Exercise exercise);
 
     Exercise toEntity(AddExerciseRequestDTO addExerciseRequestDTO);

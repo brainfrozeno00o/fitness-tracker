@@ -27,7 +27,6 @@ public class WorkoutResponseDTO implements Serializable {
 
     private String remarks;
 
-    @JsonProperty("exercises")
-    private List<WorkoutExerciseDTO> workoutExercises;
+    private List<WorkoutExerciseDTO> exercises;
 
 }

@@ -98,7 +98,7 @@ public class WorkoutServiceTest {
         assertEquals("Test Trainee", actualResponse.getTraineeName());
         assertEquals("Test Remarks", actualResponse.getRemarks());
 
-        assertTrue(actualResponse.getWorkoutExercises().isEmpty());
+        assertTrue(actualResponse.getExercises().isEmpty());
     }
 
     @Test
@@ -207,7 +207,7 @@ public class WorkoutServiceTest {
         responseDTO.setWorkoutDate("2022-10-13");
         responseDTO.setTraineeName("Test Trainee");
         responseDTO.setRemarks("Test Remarks");
-        responseDTO.setWorkoutExercises(new ArrayList<>());
+        responseDTO.setExercises(new ArrayList<>());
 
         return responseDTO;
     }

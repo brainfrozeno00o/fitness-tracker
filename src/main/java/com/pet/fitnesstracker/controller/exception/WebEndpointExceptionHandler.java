@@ -1,5 +1,9 @@
 package com.pet.fitnesstracker.controller.exception;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.annotation.Configuration;
@@ -30,10 +34,9 @@ public class WebEndpointExceptionHandler extends ResponseEntityExceptionHandler 
         WebRequest request) {
         errorMessage = "Request violates a specific constraint";
 
-        log.error("Constraint Violation On: {}", ex.getConstraintName());
-        log.error("Constraint Violation Exception: {}", ex.getMessage());
+        log.error("Constraint Violation Exception On {} - {}", ex.getMessage(), ex.getConstraintName());
 
-        return createResponse(new ErrorDTO(HttpStatus.CONFLICT, errorMessage));
+        return createResponse(new ErrorDTO(HttpStatus.CONFLICT, errorMessage, getUTCTimestamp()));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -43,7 +46,7 @@ public class WebEndpointExceptionHandler extends ResponseEntityExceptionHandler 
 
         log.error("Resource Not Found Exception: {}", ex.getMessage());
 
-        return createResponse(new ErrorDTO(HttpStatus.NOT_FOUND, errorMessage));
+        return createResponse(new ErrorDTO(HttpStatus.NOT_FOUND, errorMessage, getUTCTimestamp()));
     }
 
     @ExceptionHandler(BadRequestException.class)
@@ -53,7 +56,7 @@ public class WebEndpointExceptionHandler extends ResponseEntityExceptionHandler 
 
         log.error("Bad Request Exception: {}", ex.getMessage());
 
-        return createResponse(new ErrorDTO(HttpStatus.BAD_REQUEST, errorMessage));
+        return createResponse(new ErrorDTO(HttpStatus.BAD_REQUEST, errorMessage, getUTCTimestamp()));
     }
 
     private ResponseEntity<Object> createResponse(ErrorDTO errorDTO) {
@@ -61,6 +64,12 @@ public class WebEndpointExceptionHandler extends ResponseEntityExceptionHandler 
         headers.setContentType(MediaType.APPLICATION_PROBLEM_JSON);
 
         return new ResponseEntity<>(errorDTO, headers, errorDTO.getStatus());
+    }
+
+    private String getUTCTimestamp() {
+        return ZonedDateTime.now(ZoneOffset.UTC).format(
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        );
     }
 
 }

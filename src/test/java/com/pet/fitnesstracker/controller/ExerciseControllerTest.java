@@ -50,7 +50,7 @@ class ExerciseControllerTest {
 
         responseDTO.setId(1L);
         responseDTO.setName("Test Exercise");
-        responseDTO.setWorkoutExercises(new ArrayList<>());
+        responseDTO.setWorkouts(new ArrayList<>());
 
         when(service.findExerciseById(anyString())).thenReturn(responseDTO);
 
