@@ -1,6 +1,7 @@
 package com.pet.fitnesstracker.domain;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,7 +39,11 @@ public class Workout {
     @ManyToOne(fetch = FetchType.LAZY)
     private Trainee trainee;
 
-    @OneToMany(mappedBy = "workout")
+    @OneToMany(
+        mappedBy = "workout",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private List<WorkoutExercise> workoutExercises;
 
     @Override

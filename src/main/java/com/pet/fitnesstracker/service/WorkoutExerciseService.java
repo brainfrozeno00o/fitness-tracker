@@ -95,4 +95,29 @@ public class WorkoutExerciseService {
         return workoutExerciseRepository.save(newWorkoutExercise);
     }
 
+    public void deleteWorkoutExerciseById(String id) {
+        if (Strings.isBlank(id)) {
+            throw new BadRequestException("Id must not be null or empty");
+        }
+
+        long workoutExerciseId;
+
+        try {
+            workoutExerciseId = Long.parseLong(id);
+        } catch (NumberFormatException nfe) {
+            throw new BadRequestException("Id must be a numeric value");
+        }
+
+        WorkoutExercise workoutExerciseFromDb = workoutExerciseRepository
+            .findById(workoutExerciseId)
+            .orElse(null);
+
+        if (workoutExerciseFromDb == null) {
+            throw new ResourceNotFoundException(String.format("Workout Exercise with id '%s' does not exist.",
+                id));
+        }
+
+        workoutExerciseRepository.delete(workoutExerciseFromDb);
+    }
+
 }

@@ -62,4 +62,29 @@ public class ExerciseService {
         return repository.save(mapper.toEntity(addExerciseRequestDTO));
     }
 
+    public void deleteExerciseById(String id) {
+        if (Strings.isBlank(id)) {
+            throw new BadRequestException("Id must not be null or empty");
+        }
+
+        long exerciseId;
+
+        try {
+            exerciseId = Long.parseLong(id);
+        } catch (NumberFormatException nfe) {
+            throw new BadRequestException("Id must be a numeric value");
+        }
+
+        Exercise exerciseFromDb = repository
+            .findById(exerciseId)
+            .orElse(null);
+
+        if (exerciseFromDb == null) {
+            throw new ResourceNotFoundException(String.format("Exercise with id '%s' does not exist.",
+                id));
+        }
+
+        repository.delete(exerciseFromDb);
+    }
+
 }

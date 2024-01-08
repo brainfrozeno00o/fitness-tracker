@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,14 @@ public class ExerciseController {
         Exercise newExercise = service.addExercise(addExerciseRequestDTO);
 
         return ResponseEntity.created(new URI("/v1/fitness/exercises/" + newExercise.getId())).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteExerciseById(@PathVariable("id") String exerciseId) {
+        log.info("Deleting exercise by ID: {}", exerciseId);
+        service.deleteExerciseById(exerciseId);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
