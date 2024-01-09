@@ -5,7 +5,7 @@ This is a personal project using a close friend's idea just to experience buildi
 - Spring 2.5.2
 
 This is basically a fitness tracker that:
-- Gets the following information
+- Gets the following information by ID
   - Trainee - name, workouts
   - Workout - name and which trainee it belongs to, workout date, exercise/s part of the workout, remarks (if there are)
   - Exercise - name, which workout/s it is part of
@@ -15,15 +15,11 @@ This is basically a fitness tracker that:
   - Workout - name and which trainee it belongs to, workout date, remarks (if there are)
   - Exercise - name
   - Workout Exercise - determining which workout and exercise, and then how many reps and how intense it would be, remarks (if there are)
+- Delete the following by ID: Trainee, Workout, Exercise, and Workout Exercise
 
 This service currently uses the _MVC Architecture_ pattern for simplicity. There might be a chance that it would be converted to using Clean Architecture once things go complex.
 
 ## TODO
-- Delete the following
-  - Trainee
-  - Workout 
-  - Exercise - should probably also update workout exercises as well along the way 
-  - Workout Exercise
 - Update the following
   - Trainee - name
   - Workout - name and remarks

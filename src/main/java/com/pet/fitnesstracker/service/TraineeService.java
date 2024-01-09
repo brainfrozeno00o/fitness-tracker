@@ -62,4 +62,29 @@ public class TraineeService {
         return repository.save(mapper.toEntity(addTraineeRequestDTO));
     }
 
+    public void deleteTraineeById(String id) {
+        if (Strings.isBlank(id)) {
+            throw new BadRequestException("Id must not be null or empty");
+        }
+
+        long traineeId;
+
+        try {
+            traineeId = Long.parseLong(id);
+        } catch (NumberFormatException nfe) {
+            throw new BadRequestException("Id must be a numeric value");
+        }
+
+        Trainee traineeFromDb = repository
+            .findById(traineeId)
+            .orElse(null);
+
+        if (traineeFromDb == null) {
+            throw new ResourceNotFoundException(String.format("Trainee with id '%s' does not exist.",
+                id));
+        }
+
+        repository.delete(traineeFromDb);
+    }
+
 }
