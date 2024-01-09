@@ -2,9 +2,12 @@ package com.pet.fitnesstracker.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -147,6 +150,36 @@ class TraineeControllerTest {
             .andExpect(status().isConflict())
             .andExpect(jsonPath("status").value("CONFLICT"))
             .andExpect(jsonPath("message").value("Request violates a specific constraint"));
+    }
+
+    @Test
+    void deleteTrainee_thenSuccess() throws Exception {
+        doNothing().when(service).deleteTraineeById(anyString());
+
+        mockMvc.perform(delete("/v1/fitness/trainees/1"))
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deleteTrainee_withAlphabeticInput_thenFail() throws Exception {
+        errorDetail = "Id must be a numeric value";
+
+        doThrow(new BadRequestException(errorDetail)).when(service).deleteTraineeById(anyString());
+
+        mockMvc.perform(delete("/v1/fitness/trainees/invalid"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("status").value("BAD_REQUEST"));
+    }
+
+    @Test
+    void deleteTrainee_whenExerciseIdIsNonExistent_thenFail() throws Exception {
+        errorDetail = "Trainee with id '6969' does not exist.";
+
+        doThrow(new BadRequestException(errorDetail)).when(service).deleteTraineeById(anyString());
+
+        mockMvc.perform(delete("/v1/fitness/trainees/6969"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("status").value("BAD_REQUEST"));
     }
 
 }

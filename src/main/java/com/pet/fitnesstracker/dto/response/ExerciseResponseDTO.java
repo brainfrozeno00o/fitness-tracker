@@ -1,6 +1,5 @@
 package com.pet.fitnesstracker.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pet.fitnesstracker.dto.WorkoutDTO;
 import java.io.Serializable;
 import java.util.List;

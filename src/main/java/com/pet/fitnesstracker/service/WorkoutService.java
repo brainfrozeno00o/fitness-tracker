@@ -80,4 +80,29 @@ public class WorkoutService {
         return newWorkout;
     }
 
+    public void deleteWorkoutById(String id) {
+        if (Strings.isBlank(id)) {
+            throw new BadRequestException("Id must not be null or empty");
+        }
+
+        long workoutId;
+
+        try {
+            workoutId = Long.parseLong(id);
+        } catch (NumberFormatException nfe) {
+            throw new BadRequestException("Id must be a numeric value");
+        }
+
+        Workout workoutFromDb = repository
+            .findById(workoutId)
+            .orElse(null);
+
+        if (workoutFromDb == null) {
+            throw new ResourceNotFoundException(String.format("Workout with id '%s' does not exist.",
+                id));
+        }
+
+        repository.delete(workoutFromDb);
+    }
+
 }
