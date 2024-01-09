@@ -149,7 +149,7 @@ class WorkoutExerciseControllerTest {
     }
 
     @Test
-    void deleteWorkout_withAlphabeticInput_thenFail() throws Exception {
+    void deleteWorkoutExercise_withAlphabeticInput_thenFail() throws Exception {
         errorDetail = "Id must be a numeric value";
 
         doThrow(new BadRequestException(errorDetail)).when(service).deleteWorkoutExerciseById(anyString());
@@ -160,7 +160,7 @@ class WorkoutExerciseControllerTest {
     }
 
     @Test
-    void deleteWorkout_whenExerciseIdIsNonExistent_thenFail() throws Exception {
+    void deleteWorkoutExercise_whenExerciseIdIsNonExistent_thenFail() throws Exception {
         errorDetail = "Workout Exercise with id '6969' does not exist.";
 
         doThrow(new BadRequestException(errorDetail)).when(service).deleteWorkoutExerciseById(anyString());
