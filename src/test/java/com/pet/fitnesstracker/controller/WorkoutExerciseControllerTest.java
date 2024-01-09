@@ -2,9 +2,12 @@ package com.pet.fitnesstracker.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -135,6 +138,36 @@ class WorkoutExerciseControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("status").value("BAD_REQUEST"))
             .andExpect(jsonPath("message").value("Request is not well-formed"));
+    }
+
+    @Test
+    void deleteWorkoutExercise_thenSuccess() throws Exception {
+        doNothing().when(service).deleteWorkoutExerciseById(anyString());
+
+        mockMvc.perform(delete("/v1/fitness/workouts/exercises/1"))
+            .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deleteWorkout_withAlphabeticInput_thenFail() throws Exception {
+        errorDetail = "Id must be a numeric value";
+
+        doThrow(new BadRequestException(errorDetail)).when(service).deleteWorkoutExerciseById(anyString());
+
+        mockMvc.perform(delete("/v1/fitness/workouts/exercises/invalid"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("status").value("BAD_REQUEST"));
+    }
+
+    @Test
+    void deleteWorkout_whenExerciseIdIsNonExistent_thenFail() throws Exception {
+        errorDetail = "Workout Exercise with id '6969' does not exist.";
+
+        doThrow(new BadRequestException(errorDetail)).when(service).deleteWorkoutExerciseById(anyString());
+
+        mockMvc.perform(delete("/v1/fitness/workouts/exercises/6969"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("status").value("BAD_REQUEST"));
     }
 
 }

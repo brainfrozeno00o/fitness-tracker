@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.pet.fitnesstracker.controller.exception.BadRequestException;
@@ -38,6 +41,7 @@ public class ExerciseServiceTest {
     ExerciseService service;
 
     BadRequestException badRequestException;
+    ResourceNotFoundException resourceNotFoundException;
     AddExerciseRequestDTO validRequestDTO = new AddExerciseRequestDTO("Test Exercise");
 
     @Test
@@ -119,6 +123,51 @@ public class ExerciseServiceTest {
         assertEquals(exercise.getName(), actualExercise.getName());
 
         assertNull(actualExercise.getWorkoutExercises());
+    }
+
+    @Test
+    void deleteExerciseById_withNullString_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.deleteExerciseById(null));
+
+        assertEquals("Id must not be null or empty", badRequestException.getMessage());
+    }
+
+    @Test
+    void deleteExerciseById_withEmptyString_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.deleteExerciseById(""));
+
+        assertEquals("Id must not be null or empty", badRequestException.getMessage());
+    }
+
+    @Test
+    void deleteExerciseById_withInvalidNumericValue_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.deleteExerciseById("workout-exercise"));
+
+        assertEquals("Id must be a numeric value", badRequestException.getMessage());
+    }
+
+    @Test
+    void deleteExerciseById_withValidNumericValue_thenThrowResourceNotFound() {
+        when(repository.findById(anyLong())).thenReturn(Optional.empty());
+
+        resourceNotFoundException = assertThrows(ResourceNotFoundException.class, () ->
+            service.deleteExerciseById("6969"));
+
+        assertEquals("Exercise with id '6969' does not exist.", resourceNotFoundException.getMessage());
+    }
+
+    @Test
+    void deleteExerciseById_thenSuccess() throws Exception {
+        when(repository.findById(anyLong())).thenReturn(Optional.of(new Exercise()));
+        doNothing().when(repository).delete(any());
+
+        service.deleteExerciseById("1");
+
+        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).delete(any());
     }
 
     private Exercise createSampleExercise() {
