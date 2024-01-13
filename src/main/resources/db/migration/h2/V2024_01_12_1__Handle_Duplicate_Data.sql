@@ -1,0 +1,2 @@
+ALTER TABLE workout ADD CONSTRAINT unq_trainee_workout_name_day UNIQUE (trainee_id, name, workout_day);
+ALTER TABLE workout_exercise ADD CONSTRAINT unq_woex_repetition_intensity UNIQUE (workout_id, exercise_id, repetitions, intensity);

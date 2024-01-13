@@ -27,9 +27,7 @@ COPY workout_exercise (workout_id, exercise_id, repetitions, intensity) FROM std
 "7","5","20","low"
 "7","10","20","low"
 "7","5","40","high"
-"7","10","20","low"
 "8","10","420","low"
 "8","10","420","medium"
 "8","10","420","high"
-"8","10","420","low"
 \.
