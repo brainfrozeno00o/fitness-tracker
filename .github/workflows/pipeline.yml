@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Java JDK
         uses: actions/setup-java@v4
@@ -32,10 +32,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Checkout badges branch to a badges directory nested inside first checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: badges
           path: badges
