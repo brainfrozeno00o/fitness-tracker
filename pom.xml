@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.3-SNAPSHOT</spring-cloud.version>
-		<mapstruct.version>1.4.2.Final</mapstruct.version>
+		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<lombok.version>1.18.20</lombok.version>
 		<jacoco.version>0.8.7</jacoco.version>
 		<equalsverifier.version>3.7</equalsverifier.version>
