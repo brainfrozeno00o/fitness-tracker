@@ -22,7 +22,10 @@ import com.pet.fitnesstracker.dto.request.AddWorkoutRequestDTO;
 import com.pet.fitnesstracker.dto.response.WorkoutResponseDTO;
 import com.pet.fitnesstracker.service.WorkoutService;
 import java.util.ArrayList;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PSQLException;
+import org.postgresql.util.PSQLState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -138,6 +141,26 @@ class WorkoutControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("status").value("BAD_REQUEST"))
             .andExpect(jsonPath("message").value("Request is not well-formed"));
+    }
+
+    @Test
+    void addWorkout_withExistingWorkoutForTrainee_thenFail() throws Exception {
+        requestDTO.setTraineeId(1L);
+        requestDTO.setName("Test Workout");
+        requestDTO.setWorkoutDate("2022-10-13");
+
+        errorDetail = "Request violates a specific constraint";
+
+        when(service.addWorkout(any())).thenThrow(new ConstraintViolationException("cannot execute statement",
+            new PSQLException(errorDetail, PSQLState.UNIQUE_VIOLATION), "unq_trainee_workout_name_day"));
+
+        mockMvc.perform(post("/v1/fitness/workouts")
+                .contentType(APPLICATION_JSON)
+                .content(om.writeValueAsString(requestDTO))
+                .accept(APPLICATION_JSON))
+            .andExpect(status().isConflict())
+            .andExpect(jsonPath("status").value("CONFLICT"))
+            .andExpect(jsonPath("message").value("Request violates a specific constraint - unq_trainee_workout_name_day"));
     }
 
     @Test

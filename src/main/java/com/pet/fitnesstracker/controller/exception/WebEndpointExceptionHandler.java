@@ -32,7 +32,7 @@ public class WebEndpointExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleDataIntegrityViolationException(ConstraintViolationException ex,
         WebRequest request) {
-        errorMessage = "Request violates a specific constraint";
+        errorMessage = String.format("Request violates a specific constraint - %s", ex.getConstraintName());
 
         log.error("Constraint Violation Exception On {} - {}", ex.getMessage(), ex.getConstraintName());
 

@@ -21,7 +21,10 @@ import com.pet.fitnesstracker.domain.WorkoutExercise;
 import com.pet.fitnesstracker.dto.request.AddWorkoutExerciseRequestDTO;
 import com.pet.fitnesstracker.dto.response.WorkoutExerciseResponseDTO;
 import com.pet.fitnesstracker.service.WorkoutExerciseService;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PSQLException;
+import org.postgresql.util.PSQLState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -138,6 +141,27 @@ class WorkoutExerciseControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("status").value("BAD_REQUEST"))
             .andExpect(jsonPath("message").value("Request is not well-formed"));
+    }
+
+    @Test
+    void addWorkout_withExistingWorkoutForTrainee_thenFail() throws Exception {
+        requestDTO.setWorkoutId(1L);
+        requestDTO.setExerciseId(1L);
+        requestDTO.setRepetitions(1);
+        requestDTO.setIntensity("low");
+
+        errorDetail = "Request violates a specific constraint";
+
+        when(service.addWorkoutExercise(any())).thenThrow(new ConstraintViolationException("cannot execute statement",
+            new PSQLException(errorDetail, PSQLState.UNIQUE_VIOLATION), "unq_woex_repetition_intensity"));
+
+        mockMvc.perform(post("/v1/fitness/workouts/exercises")
+                .contentType(APPLICATION_JSON)
+                .content(om.writeValueAsString(requestDTO))
+                .accept(APPLICATION_JSON))
+            .andExpect(status().isConflict())
+            .andExpect(jsonPath("status").value("CONFLICT"))
+            .andExpect(jsonPath("message").value("Request violates a specific constraint - unq_woex_repetition_intensity"));
     }
 
     @Test

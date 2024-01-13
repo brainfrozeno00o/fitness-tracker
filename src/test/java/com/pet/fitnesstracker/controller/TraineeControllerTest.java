@@ -149,7 +149,7 @@ class TraineeControllerTest {
                 .accept(APPLICATION_JSON))
             .andExpect(status().isConflict())
             .andExpect(jsonPath("status").value("CONFLICT"))
-            .andExpect(jsonPath("message").value("Request violates a specific constraint"));
+            .andExpect(jsonPath("message").value("Request violates a specific constraint - unq_trainee_name"));
     }
 
     @Test
