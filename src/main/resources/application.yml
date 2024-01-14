@@ -1,5 +1,10 @@
 server:
   port: 8080
+  tomcat:
+    accesslog:
+      enabled: true
+      pattern: '%{yyyy-MM-dd}tT%{HH:mm:ss.SSSZ}t %a "%r" %s (%D ms)'
+    basedir: /tmp/tomcat/fitness-tracker # This is relative to where the directory of the whole project is found
 
 spring:
   application:
@@ -35,6 +40,9 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 logging:
-  file: /tmp/fitness-tracker/spring-reactive.log
+  file:
+    name: /tmp/fitness-tracker/spring-reactive.log
   level:
     root: INFO
+    com:
+      pet: DEBUG
