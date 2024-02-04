@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pet.fitnesstracker.controller.exception.BadRequestException;
 import com.pet.fitnesstracker.controller.exception.ResourceNotFoundException;
 import com.pet.fitnesstracker.domain.Trainee;
-import com.pet.fitnesstracker.dto.request.AddTraineeRequestDTO;
+import com.pet.fitnesstracker.dto.request.TraineeRequestDTO;
 import com.pet.fitnesstracker.dto.response.TraineeResponseDTO;
 import com.pet.fitnesstracker.service.TraineeService;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ class TraineeControllerTest {
 
     private static final ObjectMapper om = new ObjectMapper();
     private String errorDetail;
-    private final AddTraineeRequestDTO requestDTO = new AddTraineeRequestDTO();
+    private final TraineeRequestDTO requestDTO = new TraineeRequestDTO();
 
     @Test
     void findTraineeById_thenSuccess() throws Exception {

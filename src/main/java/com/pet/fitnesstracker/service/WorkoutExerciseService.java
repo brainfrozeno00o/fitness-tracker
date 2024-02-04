@@ -5,7 +5,7 @@ import com.pet.fitnesstracker.controller.exception.ResourceNotFoundException;
 import com.pet.fitnesstracker.domain.Exercise;
 import com.pet.fitnesstracker.domain.Workout;
 import com.pet.fitnesstracker.domain.WorkoutExercise;
-import com.pet.fitnesstracker.dto.request.AddWorkoutExerciseRequestDTO;
+import com.pet.fitnesstracker.dto.request.WorkoutExerciseRequestDTO;
 import com.pet.fitnesstracker.dto.response.WorkoutExerciseResponseDTO;
 import com.pet.fitnesstracker.repository.ExerciseRepository;
 import com.pet.fitnesstracker.repository.WorkoutExerciseRepository;
@@ -59,14 +59,14 @@ public class WorkoutExerciseService {
     }
 
     public WorkoutExercise addWorkoutExercise(
-        AddWorkoutExerciseRequestDTO addWorkoutExerciseRequestDTO) throws ConstraintViolationException {
-        if (addWorkoutExerciseRequestDTO == null) {
+        WorkoutExerciseRequestDTO workoutExerciseRequestDTO) throws ConstraintViolationException {
+        if (workoutExerciseRequestDTO == null) {
             throw new BadRequestException("Request should not be null");
         }
 
-        addWorkoutExerciseRequestDTO.validate();
+        workoutExerciseRequestDTO.validate();
 
-        long workoutId = addWorkoutExerciseRequestDTO.getWorkoutId();
+        long workoutId = workoutExerciseRequestDTO.getWorkoutId();
 
         Optional<Workout> workoutFromDb = workoutRepository.findById(workoutId);
 
@@ -75,7 +75,7 @@ public class WorkoutExerciseService {
                 workoutId));
         }
 
-        long exerciseId = addWorkoutExerciseRequestDTO.getExerciseId();
+        long exerciseId = workoutExerciseRequestDTO.getExerciseId();
 
         Optional<Exercise> exerciseFromDb = exerciseRepository.findById(exerciseId);
 
@@ -88,9 +88,9 @@ public class WorkoutExerciseService {
 
         newWorkoutExercise.setWorkout(workoutFromDb.get());
         newWorkoutExercise.setExercise(exerciseFromDb.get());
-        newWorkoutExercise.setIntensity(addWorkoutExerciseRequestDTO.getIntensity().toLowerCase());
-        newWorkoutExercise.setRepetitions(addWorkoutExerciseRequestDTO.getRepetitions());
-        newWorkoutExercise.setRemarks(addWorkoutExerciseRequestDTO.getRemarks());
+        newWorkoutExercise.setIntensity(workoutExerciseRequestDTO.getIntensity().toLowerCase());
+        newWorkoutExercise.setRepetitions(workoutExerciseRequestDTO.getRepetitions());
+        newWorkoutExercise.setRemarks(workoutExerciseRequestDTO.getRemarks());
 
         return workoutExerciseRepository.save(newWorkoutExercise);
     }

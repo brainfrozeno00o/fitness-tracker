@@ -3,7 +3,7 @@ package com.pet.fitnesstracker.service;
 import com.pet.fitnesstracker.controller.exception.BadRequestException;
 import com.pet.fitnesstracker.controller.exception.ResourceNotFoundException;
 import com.pet.fitnesstracker.domain.Trainee;
-import com.pet.fitnesstracker.dto.request.AddTraineeRequestDTO;
+import com.pet.fitnesstracker.dto.request.TraineeRequestDTO;
 import com.pet.fitnesstracker.dto.response.TraineeResponseDTO;
 import com.pet.fitnesstracker.repository.TraineeRepository;
 import com.pet.fitnesstracker.service.mapper.TraineeMapper;
@@ -52,14 +52,14 @@ public class TraineeService {
         return mapper.toDto(trainee);
     }
 
-    public Trainee addTrainee(AddTraineeRequestDTO addTraineeRequestDTO) throws ConstraintViolationException {
-        if (addTraineeRequestDTO == null) {
+    public Trainee addTrainee(TraineeRequestDTO traineeRequestDTO) throws ConstraintViolationException {
+        if (traineeRequestDTO == null) {
             throw new BadRequestException("Request should not be null");
         }
 
-        addTraineeRequestDTO.validate();
+        traineeRequestDTO.validate();
 
-        return repository.save(mapper.toEntity(addTraineeRequestDTO));
+        return repository.save(mapper.toEntity(traineeRequestDTO));
     }
 
     public void deleteTraineeById(String id) {

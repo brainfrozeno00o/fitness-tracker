@@ -1,7 +1,7 @@
 package com.pet.fitnesstracker.service.mapper;
 
 import com.pet.fitnesstracker.domain.Trainee;
-import com.pet.fitnesstracker.dto.request.AddTraineeRequestDTO;
+import com.pet.fitnesstracker.dto.request.TraineeRequestDTO;
 import com.pet.fitnesstracker.dto.response.TraineeResponseDTO;
 import org.mapstruct.Mapper;
 
@@ -13,6 +13,6 @@ public interface TraineeMapper {
 
     TraineeResponseDTO toDto(Trainee trainee);
 
-    Trainee toEntity(AddTraineeRequestDTO addTraineeRequestDTO);
+    Trainee toEntity(TraineeRequestDTO traineeRequestDTO);
 
 }

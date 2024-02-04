@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pet.fitnesstracker.controller.exception.BadRequestException;
 import com.pet.fitnesstracker.controller.exception.ResourceNotFoundException;
 import com.pet.fitnesstracker.domain.WorkoutExercise;
-import com.pet.fitnesstracker.dto.request.AddWorkoutExerciseRequestDTO;
+import com.pet.fitnesstracker.dto.request.WorkoutExerciseRequestDTO;
 import com.pet.fitnesstracker.dto.response.WorkoutExerciseResponseDTO;
 import com.pet.fitnesstracker.service.WorkoutExerciseService;
 import org.hibernate.exception.ConstraintViolationException;
@@ -44,7 +44,7 @@ class WorkoutExerciseControllerTest {
 
     private static final ObjectMapper om = new ObjectMapper();
     private String errorDetail;
-    private final AddWorkoutExerciseRequestDTO requestDTO = new AddWorkoutExerciseRequestDTO();
+    private final WorkoutExerciseRequestDTO requestDTO = new WorkoutExerciseRequestDTO();
 
     @Test
     void findWorkoutExerciseById_thenSuccess() throws Exception {

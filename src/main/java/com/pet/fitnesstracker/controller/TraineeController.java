@@ -1,7 +1,7 @@
 package com.pet.fitnesstracker.controller;
 
 import com.pet.fitnesstracker.domain.Trainee;
-import com.pet.fitnesstracker.dto.request.AddTraineeRequestDTO;
+import com.pet.fitnesstracker.dto.request.TraineeRequestDTO;
 import com.pet.fitnesstracker.dto.response.TraineeResponseDTO;
 import com.pet.fitnesstracker.service.TraineeService;
 import java.net.URI;
@@ -36,10 +36,10 @@ public class TraineeController {
     }
 
     @PostMapping
-    public ResponseEntity<Trainee> addTrainee(@RequestBody AddTraineeRequestDTO addTraineeRequestDTO)
+    public ResponseEntity<Trainee> addTrainee(@RequestBody TraineeRequestDTO traineeRequestDTO)
         throws URISyntaxException {
-        log.info("Adding trainee: {}", addTraineeRequestDTO);
-        Trainee newTrainee = service.addTrainee(addTraineeRequestDTO);
+        log.info("Adding trainee: {}", traineeRequestDTO);
+        Trainee newTrainee = service.addTrainee(traineeRequestDTO);
 
         return ResponseEntity.created(new URI("/v1/fitness/trainees/" + newTrainee.getId())).build();
     }

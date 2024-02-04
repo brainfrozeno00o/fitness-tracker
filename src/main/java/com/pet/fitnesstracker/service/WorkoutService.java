@@ -4,7 +4,7 @@ import com.pet.fitnesstracker.controller.exception.BadRequestException;
 import com.pet.fitnesstracker.controller.exception.ResourceNotFoundException;
 import com.pet.fitnesstracker.domain.Trainee;
 import com.pet.fitnesstracker.domain.Workout;
-import com.pet.fitnesstracker.dto.request.AddWorkoutRequestDTO;
+import com.pet.fitnesstracker.dto.request.WorkoutRequestDTO;
 import com.pet.fitnesstracker.dto.response.WorkoutResponseDTO;
 import com.pet.fitnesstracker.repository.TraineeRepository;
 import com.pet.fitnesstracker.repository.WorkoutRepository;
@@ -55,14 +55,14 @@ public class WorkoutService {
         return mapper.toDto(workout);
     }
 
-    public Workout addWorkout(AddWorkoutRequestDTO addWorkoutRequestDTO) {
-        if (addWorkoutRequestDTO == null) {
+    public Workout addWorkout(WorkoutRequestDTO workoutRequestDTO) {
+        if (workoutRequestDTO == null) {
             throw new BadRequestException("Request should not be null");
         }
 
-        addWorkoutRequestDTO.validate();
+        workoutRequestDTO.validate();
 
-        Long traineeId = addWorkoutRequestDTO.getTraineeId();
+        Long traineeId = workoutRequestDTO.getTraineeId();
 
         Optional<Trainee> traineeFromDb = traineeRepository.findById(traineeId);
 
@@ -72,7 +72,7 @@ public class WorkoutService {
         }
 
         Trainee existingTrainee = traineeFromDb.get();
-        Workout newWorkout = mapper.toEntity(addWorkoutRequestDTO);
+        Workout newWorkout = mapper.toEntity(workoutRequestDTO);
 
         existingTrainee.addWorkout(newWorkout);
         traineeRepository.save(existingTrainee);

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pet.fitnesstracker.controller.exception.BadRequestException;
 import com.pet.fitnesstracker.controller.exception.ResourceNotFoundException;
 import com.pet.fitnesstracker.domain.Workout;
-import com.pet.fitnesstracker.dto.request.AddWorkoutRequestDTO;
+import com.pet.fitnesstracker.dto.request.WorkoutRequestDTO;
 import com.pet.fitnesstracker.dto.response.WorkoutResponseDTO;
 import com.pet.fitnesstracker.service.WorkoutService;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ class WorkoutControllerTest {
 
     private static final ObjectMapper om = new ObjectMapper();
     private String errorDetail;
-    private final AddWorkoutRequestDTO requestDTO = new AddWorkoutRequestDTO();
+    private final WorkoutRequestDTO requestDTO = new WorkoutRequestDTO();
 
     @Test
     void findWorkoutById_thenSuccess() throws Exception {

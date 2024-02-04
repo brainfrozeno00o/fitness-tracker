@@ -3,7 +3,7 @@ package com.pet.fitnesstracker.service.mapper;
 import com.pet.fitnesstracker.domain.Workout;
 import com.pet.fitnesstracker.domain.WorkoutExercise;
 import com.pet.fitnesstracker.dto.WorkoutExerciseDTO;
-import com.pet.fitnesstracker.dto.request.AddWorkoutRequestDTO;
+import com.pet.fitnesstracker.dto.request.WorkoutRequestDTO;
 import com.pet.fitnesstracker.dto.response.WorkoutResponseDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public interface WorkoutMapper {
     @Mapping(target = "exercises", source = "workoutExercises", qualifiedByName = "getWorkoutExercises")
     WorkoutResponseDTO toDto(Workout workout);
 
-    Workout toEntity(AddWorkoutRequestDTO addWorkoutRequestDTO);
+    Workout toEntity(WorkoutRequestDTO workoutRequestDTO);
 
     @Named("getWorkoutExercises")
     static List<WorkoutExerciseDTO> getWorkoutExercisesList(List<WorkoutExercise> workoutExercises) {

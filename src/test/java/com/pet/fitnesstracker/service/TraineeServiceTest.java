@@ -17,7 +17,7 @@ import com.pet.fitnesstracker.controller.exception.ResourceNotFoundException;
 import com.pet.fitnesstracker.domain.Trainee;
 import com.pet.fitnesstracker.domain.Workout;
 import com.pet.fitnesstracker.dto.WorkoutDTO;
-import com.pet.fitnesstracker.dto.request.AddTraineeRequestDTO;
+import com.pet.fitnesstracker.dto.request.TraineeRequestDTO;
 import com.pet.fitnesstracker.dto.response.TraineeResponseDTO;
 import com.pet.fitnesstracker.repository.TraineeRepository;
 import com.pet.fitnesstracker.service.mapper.TraineeMapper;
@@ -46,7 +46,7 @@ public class TraineeServiceTest {
 
     BadRequestException badRequestException;
     ResourceNotFoundException resourceNotFoundException;
-    AddTraineeRequestDTO validRequestDTO = new AddTraineeRequestDTO("Test Trainee");
+    TraineeRequestDTO validRequestDTO = new TraineeRequestDTO("Test Trainee");
 
     @Test
     void findTraineeById_withNullString_thenThrowBadRequest() {
@@ -109,7 +109,7 @@ public class TraineeServiceTest {
 
     @Test
     void addTrainee_withInvalidValue_thenThrowBadRequest() {
-        AddTraineeRequestDTO requestDTO = new AddTraineeRequestDTO();
+        TraineeRequestDTO requestDTO = new TraineeRequestDTO();
 
         badRequestException = assertThrows(BadRequestException.class, () ->
             service.addTrainee(requestDTO));

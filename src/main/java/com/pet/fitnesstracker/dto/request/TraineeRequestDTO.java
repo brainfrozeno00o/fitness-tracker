@@ -12,9 +12,9 @@ import org.apache.logging.log4j.util.Strings;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddExerciseRequestDTO implements RequestDTO {
+public class TraineeRequestDTO implements RequestDTO {
 
-    private static final long serialVersionUID = 7152969090954770531L;
+    private static final long serialVersionUID = -1808415223405440930L;
 
     private String name;
 

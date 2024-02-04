@@ -9,7 +9,7 @@ import org.apache.logging.log4j.util.Strings;
  * @author Elmo Lingad
  */
 @Data
-public class AddWorkoutRequestDTO implements RequestDTO {
+public class WorkoutRequestDTO implements RequestDTO {
 
     private static final long serialVersionUID = -8407866699465847081L;
 

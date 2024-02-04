@@ -15,7 +15,7 @@ import com.pet.fitnesstracker.controller.exception.BadRequestException;
 import com.pet.fitnesstracker.controller.exception.ResourceNotFoundException;
 import com.pet.fitnesstracker.domain.Trainee;
 import com.pet.fitnesstracker.domain.Workout;
-import com.pet.fitnesstracker.dto.request.AddWorkoutRequestDTO;
+import com.pet.fitnesstracker.dto.request.WorkoutRequestDTO;
 import com.pet.fitnesstracker.dto.response.WorkoutResponseDTO;
 import com.pet.fitnesstracker.repository.TraineeRepository;
 import com.pet.fitnesstracker.repository.WorkoutRepository;
@@ -49,7 +49,7 @@ public class WorkoutServiceTest {
 
     BadRequestException badRequestException;
     ResourceNotFoundException resourceNotFoundException;
-    AddWorkoutRequestDTO validRequestDTO = createSampleAddWorkoutRequestDto();
+    WorkoutRequestDTO validRequestDTO = createSampleAddWorkoutRequestDto();
 
     @Test
     void findWorkoutById_withNullString_thenThrowBadRequest() {
@@ -113,7 +113,7 @@ public class WorkoutServiceTest {
 
     @Test
     void addWorkout_withInvalidValues_thenThrowBadRequest() {
-        AddWorkoutRequestDTO requestDTO = new AddWorkoutRequestDTO();
+        WorkoutRequestDTO requestDTO = new WorkoutRequestDTO();
 
         badRequestException = assertThrows(BadRequestException.class, () ->
             service.addWorkout(requestDTO));
@@ -259,8 +259,8 @@ public class WorkoutServiceTest {
         return responseDTO;
     }
 
-    private AddWorkoutRequestDTO createSampleAddWorkoutRequestDto() {
-        AddWorkoutRequestDTO requestDTO = new AddWorkoutRequestDTO();
+    private WorkoutRequestDTO createSampleAddWorkoutRequestDto() {
+        WorkoutRequestDTO requestDTO = new WorkoutRequestDTO();
 
         requestDTO.setName("Test Workout");
         requestDTO.setWorkoutDate("2022-10-13");

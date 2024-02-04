@@ -8,7 +8,7 @@ import com.pet.fitnesstracker.domain.Trainee;
 import com.pet.fitnesstracker.domain.Workout;
 import com.pet.fitnesstracker.domain.WorkoutExercise;
 import com.pet.fitnesstracker.dto.WorkoutExerciseDTO;
-import com.pet.fitnesstracker.dto.request.AddWorkoutRequestDTO;
+import com.pet.fitnesstracker.dto.request.WorkoutRequestDTO;
 import com.pet.fitnesstracker.dto.response.WorkoutResponseDTO;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
@@ -74,7 +74,7 @@ class WorkoutMapperTest {
 
     @Test
     void testAddRequestDtoToEntityMapping() {
-        AddWorkoutRequestDTO requestDTO = new AddWorkoutRequestDTO();
+        WorkoutRequestDTO requestDTO = new WorkoutRequestDTO();
 
         requestDTO.setName("Test Workout");
         requestDTO.setWorkoutDate("2022-10-14");

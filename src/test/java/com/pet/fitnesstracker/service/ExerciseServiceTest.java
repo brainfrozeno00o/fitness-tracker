@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 import com.pet.fitnesstracker.controller.exception.BadRequestException;
 import com.pet.fitnesstracker.controller.exception.ResourceNotFoundException;
 import com.pet.fitnesstracker.domain.Exercise;
-import com.pet.fitnesstracker.dto.request.AddExerciseRequestDTO;
+import com.pet.fitnesstracker.dto.request.ExerciseRequestDTO;
 import com.pet.fitnesstracker.dto.response.ExerciseResponseDTO;
 import com.pet.fitnesstracker.repository.ExerciseRepository;
 import com.pet.fitnesstracker.service.mapper.ExerciseMapper;
@@ -42,7 +42,7 @@ public class ExerciseServiceTest {
 
     BadRequestException badRequestException;
     ResourceNotFoundException resourceNotFoundException;
-    AddExerciseRequestDTO validRequestDTO = new AddExerciseRequestDTO("Test Exercise");
+    ExerciseRequestDTO validRequestDTO = new ExerciseRequestDTO("Test Exercise");
 
     @Test
     void findExerciseById_withNullString_thenThrowBadRequest() {
@@ -103,7 +103,7 @@ public class ExerciseServiceTest {
 
     @Test
     void addExercise_withInvalidValue_thenThrowBadRequest() {
-        AddExerciseRequestDTO requestDTO = new AddExerciseRequestDTO();
+        ExerciseRequestDTO requestDTO = new ExerciseRequestDTO();
 
         badRequestException = assertThrows(BadRequestException.class, () ->
             service.addExercise(requestDTO));

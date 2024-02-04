@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.pet.fitnesstracker.domain.Trainee;
 import com.pet.fitnesstracker.domain.Workout;
 import com.pet.fitnesstracker.dto.WorkoutDTO;
-import com.pet.fitnesstracker.dto.request.AddTraineeRequestDTO;
+import com.pet.fitnesstracker.dto.request.TraineeRequestDTO;
 import com.pet.fitnesstracker.dto.response.TraineeResponseDTO;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ class TraineeMapperTest {
 
     @Test
     void testAddRequestDtoToEntityMapping() {
-        AddTraineeRequestDTO requestDTO = new AddTraineeRequestDTO("Test Trainee");
+        TraineeRequestDTO requestDTO = new TraineeRequestDTO("Test Trainee");
 
         Trainee actualTrainee = mapper.toEntity(requestDTO);
 
