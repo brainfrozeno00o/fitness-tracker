@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,4 +53,11 @@ public class TraineeController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<TraineeResponseDTO> updateTrainee(@PathVariable("id") String traineeId,
+        @RequestBody TraineeRequestDTO traineeRequestDTO) {
+        log.info("Updating trainee with ID: {}", traineeId);
+
+        return ResponseEntity.ok(service.updateTrainee(traineeId, traineeRequestDTO));
+    }
 }

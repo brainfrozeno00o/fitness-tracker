@@ -87,4 +87,44 @@ public class TraineeService {
         repository.delete(traineeFromDb);
     }
 
+    public TraineeResponseDTO updateTrainee(String id, TraineeRequestDTO traineeRequestDTO) throws ConstraintViolationException {
+        boolean isUpdatingEntity = false;
+
+        if (Strings.isBlank(id)) {
+            throw new BadRequestException("Id must not be null or empty");
+        }
+
+        long traineeId;
+
+        try {
+            traineeId = Long.parseLong(id);
+        } catch (NumberFormatException nfe) {
+            throw new BadRequestException("Id must be a numeric value");
+        }
+
+        if (traineeRequestDTO == null) {
+            throw new BadRequestException("Request should not be null");
+        }
+
+        traineeRequestDTO.validate();
+
+        String newTraineeName = traineeRequestDTO.getName();
+
+        Optional<Trainee> trainee = repository.findById(traineeId);
+
+        if (trainee.isEmpty()) {
+            throw new ResourceNotFoundException(String.format("Trainee with id '%s' does not exist.",
+                id));
+        }
+
+        Trainee traineeToUpdate = trainee.get();
+
+        if (!traineeToUpdate.getName().equalsIgnoreCase(newTraineeName)) {
+            traineeToUpdate.setName(newTraineeName);
+            isUpdatingEntity = true;
+        }
+
+        return mapper.toDto(isUpdatingEntity ? repository.save(traineeToUpdate) : traineeToUpdate);
+    }
+
 }
