@@ -178,6 +178,96 @@ public class TraineeServiceTest {
         verify(repository, times(1)).delete(any());
     }
 
+    @Test
+    void updateTraineeById_withNullString_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.updateTrainee(null, null));
+
+        assertEquals("Id must not be null or empty", badRequestException.getMessage());
+    }
+
+    @Test
+    void updateTraineeById_withEmptyString_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.updateTrainee("", null));
+
+        assertEquals("Id must not be null or empty", badRequestException.getMessage());
+    }
+
+    @Test
+    void updateTraineeById_withInvalidNumericValue_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.updateTrainee("trainee", null));
+
+        assertEquals("Id must be a numeric value", badRequestException.getMessage());
+    }
+
+    @Test
+    void updateTraineeById_withValidNumericValue_withNullRequest_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.updateTrainee("1", null));
+
+        assertEquals("Request should not be null", badRequestException.getMessage());
+    }
+
+    @Test
+    void updateTraineeById_withValidNumericValue_thenThrowResourceNotFound() {
+        validRequestDTO.setName("Updated Test Trainee");
+
+        when(repository.findById(anyLong())).thenReturn(Optional.empty());
+
+        resourceNotFoundException = assertThrows(ResourceNotFoundException.class, () ->
+            service.updateTrainee("6969", validRequestDTO));
+
+        assertEquals("Trainee with id '6969' does not exist.", resourceNotFoundException.getMessage());
+    }
+
+    @Test
+    void updateTraineeById_thenReturnUpdatedTrainee() {
+        validRequestDTO.setName("Updated Test Trainee");
+
+        Trainee trainee = createSampleTrainee();
+        Trainee updatedTrainee = createSampleTrainee();
+
+        updatedTrainee.setName("Updated Test Trainee");
+
+        TraineeResponseDTO expectedResponse = createSampleTraineeResponseDto();
+
+        expectedResponse.setName("Updated Test Trainee");
+
+        when(repository.findById(anyLong())).thenReturn(Optional.of(trainee));
+        when(repository.save(any())).thenReturn(updatedTrainee);
+        when(mapper.toDto(any())).thenReturn(expectedResponse);
+
+        TraineeResponseDTO actualResponse = service.updateTrainee("1", validRequestDTO);
+
+        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).save(any());
+        verify(mapper, times(1)).toDto(any());
+
+        assertNotNull(actualResponse);
+
+        assertEquals("Updated Test Trainee", actualResponse.getName());
+    }
+
+    @Test
+    void updateTraineeById_thenReturnSameTrainee() {
+        validRequestDTO.setName("Test Trainee");
+
+        Trainee trainee = createSampleTrainee();
+
+        when(repository.findById(anyLong())).thenReturn(Optional.of(trainee));
+        when(mapper.toDto(any())).thenReturn(createSampleTraineeResponseDto());
+
+        TraineeResponseDTO actualResponse = service.updateTrainee("1", validRequestDTO);
+
+        verify(repository, times(1)).findById(anyLong());
+
+        assertNotNull(actualResponse);
+
+        assertEquals("Test Trainee", actualResponse.getName());
+    }
+
     private Trainee createSampleTrainee() {
         Trainee trainee = new Trainee();
 
