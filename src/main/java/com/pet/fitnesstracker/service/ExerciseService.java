@@ -87,4 +87,44 @@ public class ExerciseService {
         repository.delete(exerciseFromDb);
     }
 
+    public ExerciseResponseDTO updateExercise(String id, ExerciseRequestDTO exerciseRequestDTO) throws ConstraintViolationException {
+        boolean isUpdatingEntity = false;
+
+        if (Strings.isBlank(id)) {
+            throw new BadRequestException("Id must not be null or empty");
+        }
+
+        long exerciseId;
+
+        try {
+            exerciseId = Long.parseLong(id);
+        } catch (NumberFormatException nfe) {
+            throw new BadRequestException("Id must be a numeric value");
+        }
+
+        if (exerciseRequestDTO == null) {
+            throw new BadRequestException("Request should not be null");
+        }
+
+        exerciseRequestDTO.validate();
+
+        String newExerciseName = exerciseRequestDTO.getName();
+
+        Optional<Exercise> exercise = repository.findById(exerciseId);
+
+        if (exercise.isEmpty()) {
+            throw new ResourceNotFoundException(String.format("Exercise with id '%s' does not exist.",
+                id));
+        }
+
+        Exercise exerciseToUpdate = exercise.get();
+
+        if (!exerciseToUpdate.getName().equalsIgnoreCase(newExerciseName)) {
+            exerciseToUpdate.setName(newExerciseName);
+            isUpdatingEntity = true;
+        }
+
+        return mapper.toDto(isUpdatingEntity ? repository.save(exerciseToUpdate) : exerciseToUpdate);
+    }
+
 }

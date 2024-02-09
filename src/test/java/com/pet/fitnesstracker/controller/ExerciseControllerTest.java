@@ -9,6 +9,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -178,6 +179,56 @@ class ExerciseControllerTest {
         doThrow(new BadRequestException(errorDetail)).when(service).deleteExerciseById(anyString());
 
         mockMvc.perform(delete("/v1/fitness/exercises/6969"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("status").value("BAD_REQUEST"));
+    }
+
+    @Test
+    void updateExercise_thenSuccess() throws Exception {
+        ExerciseResponseDTO responseDTO = new ExerciseResponseDTO();
+
+        responseDTO.setId(1L);
+        responseDTO.setName("Updated Test Exercise");
+        responseDTO.setWorkouts(new ArrayList<>());
+
+        requestDTO.setName("Updated Test Exercise");
+
+        when(service.updateExercise(anyString(), any())).thenReturn(responseDTO);
+
+        mockMvc.perform(patch("/v1/fitness/exercises/1")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(om.writeValueAsString(requestDTO)))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(APPLICATION_JSON))
+            .andExpect(jsonPath("id").value(1L))
+            .andExpect(jsonPath("name").value("Updated Test Exercise"))
+            .andExpect(jsonPath("workouts").isEmpty());
+    }
+
+    @Test
+    void updateExercise_withAlphabeticInput_thenFail() throws Exception {
+        requestDTO.setName("test change");
+        errorDetail = "Id must be a numeric value";
+
+        doThrow(new BadRequestException(errorDetail)).when(service).updateExercise(anyString(), any());
+
+        mockMvc.perform(patch("/v1/fitness/exercises/invalid")
+                .contentType(APPLICATION_JSON)
+                .content(om.writeValueAsString(requestDTO)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("status").value("BAD_REQUEST"));
+    }
+
+    @Test
+    void updateExercise_whenExerciseIdIsNonExistent_thenFail() throws Exception {
+        errorDetail = "Exercise with id '6969' does not exist.";
+
+        doThrow(new BadRequestException(errorDetail)).when(service).updateExercise(anyString(), any());
+
+        mockMvc.perform(patch("/v1/fitness/exercises/6969")
+                .contentType(APPLICATION_JSON)
+                .content(om.writeValueAsString(requestDTO)))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("status").value("BAD_REQUEST"));
     }

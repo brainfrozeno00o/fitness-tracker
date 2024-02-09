@@ -221,7 +221,7 @@ class TraineeControllerTest {
     }
 
     @Test
-    void updateTrainee_whenExerciseIdIsNonExistent_thenFail() throws Exception {
+    void updateTrainee_whenTraineeIdIsNonExistent_thenFail() throws Exception {
         errorDetail = "Trainee with id '6969' does not exist.";
 
         doThrow(new BadRequestException(errorDetail)).when(service).updateTrainee(anyString(), any());

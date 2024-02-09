@@ -112,7 +112,7 @@ public class ExerciseServiceTest {
     }
 
     @Test
-    void addExercise_thenReturnNewTrainee() {
+    void addExercise_thenReturnNewExercise() {
         Exercise exercise = createSampleExercise();
 
         when(mapper.toEntity(any())).thenReturn(exercise);
@@ -168,6 +168,96 @@ public class ExerciseServiceTest {
 
         verify(repository, times(1)).findById(anyLong());
         verify(repository, times(1)).delete(any());
+    }
+
+    @Test
+    void updateExerciseById_withNullString_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.updateExercise(null, null));
+
+        assertEquals("Id must not be null or empty", badRequestException.getMessage());
+    }
+
+    @Test
+    void updateExerciseById_withEmptyString_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.updateExercise("", null));
+
+        assertEquals("Id must not be null or empty", badRequestException.getMessage());
+    }
+
+    @Test
+    void updateExerciseById_withInvalidNumericValue_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.updateExercise("trainee", null));
+
+        assertEquals("Id must be a numeric value", badRequestException.getMessage());
+    }
+
+    @Test
+    void updateExerciseById_withValidNumericValue_withNullRequest_thenThrowBadRequest() {
+        badRequestException = assertThrows(BadRequestException.class, () ->
+            service.updateExercise("1", null));
+
+        assertEquals("Request should not be null", badRequestException.getMessage());
+    }
+
+    @Test
+    void updateExerciseById_withValidNumericValue_thenThrowResourceNotFound() {
+        validRequestDTO.setName("Updated Test Exercise");
+
+        when(repository.findById(anyLong())).thenReturn(Optional.empty());
+
+        resourceNotFoundException = assertThrows(ResourceNotFoundException.class, () ->
+            service.updateExercise("6969", validRequestDTO));
+
+        assertEquals("Exercise with id '6969' does not exist.", resourceNotFoundException.getMessage());
+    }
+
+    @Test
+    void updateExerciseById_thenReturnUpdatedExercise() {
+        validRequestDTO.setName("Updated Test Exercise");
+
+        Exercise exercise = createSampleExercise();
+        Exercise updatedExercise = createSampleExercise();
+
+        updatedExercise.setName("Updated Test Exercise");
+
+        ExerciseResponseDTO expectedResponse = createSampleExerciseResponseDto();
+
+        expectedResponse.setName("Updated Test Exercise");
+
+        when(repository.findById(anyLong())).thenReturn(Optional.of(exercise));
+        when(repository.save(any())).thenReturn(updatedExercise);
+        when(mapper.toDto(any())).thenReturn(expectedResponse);
+
+        ExerciseResponseDTO actualResponse = service.updateExercise("1", validRequestDTO);
+
+        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).save(any());
+        verify(mapper, times(1)).toDto(any());
+
+        assertNotNull(actualResponse);
+
+        assertEquals("Updated Test Exercise", actualResponse.getName());
+    }
+
+    @Test
+    void updateExerciseById_thenReturnSameExercise() {
+        validRequestDTO.setName("Test Exercise");
+
+        Exercise exercise = createSampleExercise();
+
+        when(repository.findById(anyLong())).thenReturn(Optional.of(exercise));
+        when(mapper.toDto(any())).thenReturn(createSampleExerciseResponseDto());
+
+        ExerciseResponseDTO actualResponse = service.updateExercise("1", validRequestDTO);
+
+        verify(repository, times(1)).findById(anyLong());
+
+        assertNotNull(actualResponse);
+
+        assertEquals("Test Exercise", actualResponse.getName());
     }
 
     private Exercise createSampleExercise() {
