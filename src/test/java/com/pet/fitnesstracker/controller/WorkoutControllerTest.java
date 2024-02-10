@@ -9,6 +9,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -189,6 +190,59 @@ class WorkoutControllerTest {
         doThrow(new BadRequestException(errorDetail)).when(service).deleteWorkoutById(anyString());
 
         mockMvc.perform(delete("/v1/fitness/workouts/6969"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("status").value("BAD_REQUEST"));
+    }
+
+    @Test
+    void updateWorkout_thenSuccess() throws Exception {
+        WorkoutResponseDTO responseDTO = new WorkoutResponseDTO();
+
+        responseDTO.setId(1L);
+        responseDTO.setName("Updated Test Workout");
+        responseDTO.setRemarks("Updated Test Remarks");
+        responseDTO.setTraineeName("Test Trainee");
+
+        requestDTO.setName("Updated Test Workout");
+        requestDTO.setRemarks("Updated Test Remarks");
+
+        when(service.updateWorkout(anyString(), any())).thenReturn(responseDTO);
+
+        mockMvc.perform(patch("/v1/fitness/workouts/1")
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(om.writeValueAsString(requestDTO)))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(APPLICATION_JSON))
+            .andExpect(jsonPath("id").value(1L))
+            .andExpect(jsonPath("name").value("Updated Test Workout"))
+            .andExpect(jsonPath("remarks").value("Updated Test Remarks"))
+            .andExpect(jsonPath("traineeName").value("Test Trainee"));
+    }
+
+    @Test
+    void updateWorkout_withAlphabeticInput_thenFail() throws Exception {
+        requestDTO.setName("test change");
+        errorDetail = "Id must be a numeric value";
+
+        doThrow(new BadRequestException(errorDetail)).when(service).updateWorkout(anyString(), any());
+
+        mockMvc.perform(patch("/v1/fitness/workouts/invalid")
+                .contentType(APPLICATION_JSON)
+                .content(om.writeValueAsString(requestDTO)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("status").value("BAD_REQUEST"));
+    }
+
+    @Test
+    void updateWorkout_whenWorkoutIdIsNonExistent_thenFail() throws Exception {
+        errorDetail = "Workout with id '6969' does not exist.";
+
+        doThrow(new BadRequestException(errorDetail)).when(service).updateWorkout(anyString(), any());
+
+        mockMvc.perform(patch("/v1/fitness/workouts/6969")
+                .contentType(APPLICATION_JSON)
+                .content(om.writeValueAsString(requestDTO)))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("status").value("BAD_REQUEST"));
     }
