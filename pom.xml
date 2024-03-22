@@ -19,7 +19,7 @@
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<lombok.version>1.18.20</lombok.version>
 		<jacoco.version>0.8.7</jacoco.version>
-		<equalsverifier.version>3.7</equalsverifier.version>
+		<equalsverifier.version>3.16</equalsverifier.version>
 		<tostringverifier.version>1.4.8</tostringverifier.version>
 	</properties>
 	<dependencies>
